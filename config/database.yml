@@ -1,0 +1,8 @@
+host: 'localhost'
+adapter: 'postgresql'
+encoding: utf-8
+database: 'twitter'
+username: 'postgres'
+password: 'postgres'
+pool: 10
+timeout: 10000

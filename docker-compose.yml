@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      - PSQL_HISTFILE=/root/log/.psql_history
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
