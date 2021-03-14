@@ -52,7 +52,7 @@ ruby scripts/load_from_log.rb
 
 It may spit out couple of validation errors, you can (mostly) ignore it
 
-## IP to ASN data
+### IP to ASN data
 
 The data I'm using is from CAIDA and requires citation like this:
 
@@ -77,7 +77,7 @@ Then, for import the data run this script (**WARNING!** it will delete all the d
 ruby scripts/load_pfx2as.rb
 ```
 
-## AS organizations and countries data
+### AS organizations and countries data
 
 The data is also provided by CAIDA and requires citation:
 
@@ -95,3 +95,13 @@ Then run this script (**WARNING!** it will delete all the data from `as_organiza
 ```bash
 ruby scripts/load_as_organizations.rb
 ```
+
+### Assigning ASN-s and Subnets
+
+To assign ASNs and Subnets to imported data, open `pry` and use this command:
+
+```ruby
+Log.assign_asn_and_subnets!(ignore_existing: true)
+```
+
+`ignore_existing` does not run this for entries that already has `asn` and `subnet` fields. If you want to reassign it again, run with `ignore_existing: false`

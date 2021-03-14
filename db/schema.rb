@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_14_021644) do
+ActiveRecord::Schema.define(version: 2021_03_14_173446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2021_03_14_021644) do
   create_table "as_prefixes", force: :cascade do |t|
     t.cidr "prefix", null: false
     t.bigint "asn", null: false
+    t.index ["prefix"], name: "index_as_prefixes_on_prefix", opclass: :inet_ops, using: :gist
   end
 
   create_table "logs", force: :cascade do |t|
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(version: 2021_03_14_021644) do
     t.float "control_taco_result", null: false
     t.text "user_agent"
     t.integer "asn"
+    t.cidr "subnet"
     t.index ["ip", "datetime"], name: "index_logs_on_ip_and_datetime", unique: true
   end
 
