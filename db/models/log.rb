@@ -8,6 +8,9 @@ class Log < ActiveRecord::Base
   validates :control_taco_result, presence: true
 
   scope :without_asn, -> { where(asn: nil) }
+  scope :throttled, -> { where('test_result < 200 AND control_result > 600') }
+  scope :not_throttled, -> { where('test_result > 200 AND control_result > 600') }
+  scope :taco_throttled, -> { self.throttled.where('control_taco_result < 200') }
 
   # Thanks to @darkk for the part of this query!
   def self.assign_asn_and_subnets!(ignore_existing: false)
