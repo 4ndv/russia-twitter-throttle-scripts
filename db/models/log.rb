@@ -38,6 +38,22 @@ class Log < ActiveRecord::Base
     SQL
   end
 
+  def self.round_time!
+    Log.connection.execute <<-SQL
+      UPDATE logs
+      SET datetime_rounded = date_trunc('hour', datetime) + date_part('minute', datetime)::int / 5 * interval '5 min';
+    SQL
+  end
+
+  def self.assign_as_data!
+    Log.connection.execute <<-SQL
+      UPDATE logs
+      SET as_organization_iden = as_organizations.organization_iden, as_organization = as_organizations.name, as_country = as_organizations.country
+      FROM as_organizations
+      WHERE logs.asn = as_organizations.asn;
+    SQL
+  end
+
   protected
 
     def anonymize_ip

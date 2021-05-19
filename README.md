@@ -105,3 +105,16 @@ Log.assign_asn_and_subnets!(ignore_existing: true)
 ```
 
 `ignore_existing` does not run this for entries that already has `asn` and `subnet` fields. If you want to reassign it again, run with `ignore_existing: false`
+
+### Rounding time to 5-minute intervals
+
+```ruby
+Log.round_time!
+```
+
+### Assigning organization data
+
+```ruby
+Log.assign_organization_iden_and_name!
+Log.assign_countries!
+```

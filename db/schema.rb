@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_14_173446) do
+ActiveRecord::Schema.define(version: 2021_05_20_012845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2021_03_14_173446) do
     t.string "source", null: false
     t.integer "changed_date"
     t.string "opaque_iden"
+    t.string "country"
   end
 
   create_table "as_prefixes", force: :cascade do |t|
@@ -41,6 +42,10 @@ ActiveRecord::Schema.define(version: 2021_03_14_173446) do
     t.text "user_agent"
     t.integer "asn"
     t.cidr "subnet"
+    t.string "as_country"
+    t.text "as_organization"
+    t.text "as_organization_iden"
+    t.datetime "datetime_rounded"
     t.index ["ip", "datetime"], name: "index_logs_on_ip_and_datetime", unique: true
   end
 

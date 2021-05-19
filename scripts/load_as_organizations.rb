@@ -10,6 +10,21 @@ file = Dir
         .glob("data/as_organizations/*.jsonl")
         .first
 
+countries_names = items = IO
+                    .readlines(file, chomp: true)
+                    .map { |json| JSON.parse(json).symbolize_keys }
+                    .select { |item| item[:country].present? }
+                    .map do |item|
+                      [
+                        item[:organizationId],
+                        {
+                          country: item[:country],
+                          name: item[:name].presence || item[:organizationId]
+                        }
+                      ]
+                    end
+                    .to_h
+
 items = IO
           .readlines(file, chomp: true)
           .map { |json| JSON.parse(json).symbolize_keys }
@@ -17,8 +32,9 @@ items = IO
           .map do |item|
             {
               asn: item[:asn],
-              name: item[:name].presence || item[:organizationId],
+              name: countries_names[item[:organizationId]].try(:[], :name).presence || item[:name].presence || item[:organizationId],
               organization_iden: item[:organizationId],
+              country: countries_names[item[:organizationId]][:country],
               source: item[:source],
               changed_date: item[:changed],
               opaque_iden: item[:opaqueId]
