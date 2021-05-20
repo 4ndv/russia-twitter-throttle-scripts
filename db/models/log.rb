@@ -54,6 +54,21 @@ class Log < ActiveRecord::Base
     SQL
   end
 
+  def self.assign_everything!
+    puts "Rounding time"
+    self.round_time!
+    puts "Assigning ASNs and subnets"
+    self.assign_asn_and_subnets!(ignore_existing: false)
+    puts "Assigning AS data"
+    self.assign_as_data!
+  end
+
+  def subnet
+    return nil if super.nil?
+
+    "#{super}/#{super.prefix}"
+  end
+
   protected
 
     def anonymize_ip

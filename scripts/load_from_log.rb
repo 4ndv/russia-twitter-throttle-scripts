@@ -17,13 +17,17 @@ Parallel.each(
     remainder_mark: "\u{FF65}",
   }
 ) do |line|
-  ip = line.match(/(^.+)\s-\s-/)[1]
-  date = line.match(/\[(.*)\]/)[1]
-  date = DateTime.parse(date.split(':', 2).join(' '))
-  url = line.match(/GET (.*) HTTP/)[1]
-  qs = CGI::parse(url.split('?')[-1]).symbolize_keys
-  qs.each { |key, val| qs[key] = val&.first }
-  ua = line.split('"')[-2]
+  begin
+    ip = line.match(/(^.+)\s-\s-/)[1]
+    date = line.match(/\[(.*)\]/)[1]
+    date = DateTime.parse(date.split(':', 2).join(' '))
+    url = line.match(/GET (.*) HTTP/)[1]
+    qs = CGI::parse(url.split('?')[-1]).symbolize_keys
+    qs.each { |key, val| qs[key] = val&.first }
+    ua = line.split('"')[-2]
+  rescue
+    next
+  end
 
   # Will not be created if invalid (missing any of the fields)
   log = Log.new(
@@ -49,3 +53,7 @@ Parallel.each(
     # Do nothing
   end
 end
+
+puts "Assigning fields..."
+
+Log.assign_everything!
