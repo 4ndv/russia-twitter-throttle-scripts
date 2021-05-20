@@ -16,7 +16,7 @@ start_date.presence || end_date.presence || puts("Specify start and end date") &
 start_date = Time.find_zone("UTC").parse("#{start_date} 00:00:00")
 end_date = Time.find_zone("UTC").parse("#{end_date} 23:59:59")
 
-logs = Log.where('datetime >= ? AND datetime <= ?', start_date, end_date).order(datetime: :asc, id: :asc).group_by { |item| item.datetime.in_time_zone.strftime("%F") }
+logs = Log.where('datetime >= ? AND datetime <= ?', start_date, end_date).order(datetime_rounded: :asc, anonymized_ip: :asc, test_result: :asc).group_by { |item| item.datetime.in_time_zone.strftime("%F") }
 
 headers = %i(datetime_rounded anonymized_ip subnet asn as_country as_organization as_organization_iden version test_result control_result control_taco_result)
 
